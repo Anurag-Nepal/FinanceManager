@@ -42,7 +42,7 @@ public class SecurityConfig {
         return  http
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("register","login","verify")
+                        .requestMatchers("/register","/login","/verify")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
