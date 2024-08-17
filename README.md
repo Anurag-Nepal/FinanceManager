@@ -341,6 +341,6 @@ Body:
 
 
 
-## Footer
+## Anurag Nepal
 
-&copy; 2024 Finance Manager API Documentation. All rights reserved.
+&copy; 2024 PennyWiseNepal API Documentation. All rights reserved.
