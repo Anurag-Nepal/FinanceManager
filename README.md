@@ -339,53 +339,7 @@ Body:
 "Login successful"
 </pre>
 
-### Generate OTP
-**Endpoint:** `GET /otp`  
-**Description:** Generates a new OTP for user verification.  
-**Response:**
-<pre>
-Status Code: 200 OK
-Body:
-{
-  "otp": 123456
-}
-</pre>
 
-### Change Password
-**Endpoint:** `POST /changepassword`  
-**Description:** Changes the user's password.  
-**Request Body:**
-<pre>
-{
-  "username": "john_doe",
-  "old_password": "oldpassword",
-  "new_password": "newpassword"
-}
-</pre>
-**Response:**
-<pre>
-Status Code: 200 OK
-Body:
-"Password changed successfully"
-</pre>
-
-### Update Profile
-**Endpoint:** `PUT /updateprofile`  
-**Description:** Updates user profile information.  
-**Request Body:**
-<pre>
-{
-  "username": "john_doe",
-  "email": "john.doe@example.com",
-  "name": "John Doe"
-}
-</pre>
-**Response:**
-<pre>
-Status Code: 200 OK
-Body:
-"Profile updated successfully"
-</pre>
 
 ## Footer
 
