@@ -15,7 +15,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*",allowedHeaders = "*")
 @RequestMapping("/income")
 public class IncomeController {
 
