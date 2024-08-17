@@ -10,10 +10,7 @@ import com.pennywisenepal.financetracker.Service.ExpenseService;
 import com.pennywisenepal.financetracker.Service.IncomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
@@ -23,6 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class HomepageListDisplayer {
 
     @Autowired
