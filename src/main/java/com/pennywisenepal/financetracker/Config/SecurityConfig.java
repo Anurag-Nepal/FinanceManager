@@ -52,8 +52,6 @@ public class SecurityConfig {
                         .permitAll()
                         .anyRequest()
                         .authenticated())
-                // .formLogin(Customizer.withDefaults())
-//                .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider(userDetailService))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
@@ -63,7 +61,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public DaoAuthenticationProvider  authenticationProvider(UserDetailsService userDetailsService) {
+    public AuthenticationProvider  authenticationProvider(UserDetailsService userDetailsService) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
