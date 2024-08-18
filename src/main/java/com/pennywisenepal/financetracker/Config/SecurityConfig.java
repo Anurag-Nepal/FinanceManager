@@ -56,7 +56,7 @@ public class SecurityConfig {
                         .anyRequest()
                         .authenticated())
                 // .formLogin(Customizer.withDefaults())
-                .httpBasic(Customizer.withDefaults())
+//                .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider(userDetailService))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
