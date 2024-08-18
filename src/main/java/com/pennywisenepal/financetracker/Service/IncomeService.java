@@ -51,6 +51,7 @@ public class IncomeService {
     {
         User user = getCurrentUser();
         income.setIdate(LocalDate.now());
+        income.setUser(user);
         incomeRepository.save(income);
         return new ResponseEntity<>(income, HttpStatus.OK);
     }
