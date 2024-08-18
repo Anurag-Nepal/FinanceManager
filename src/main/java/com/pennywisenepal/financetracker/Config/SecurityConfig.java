@@ -2,6 +2,7 @@ package com.pennywisenepal.financetracker.Config;
 
 
 import com.pennywisenepal.financetracker.Filter.Jwtfilter;
+import com.pennywisenepal.financetracker.Service.MyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +39,7 @@ public class SecurityConfig {
     @Autowired
     private Jwtfilter jwtFilter;
     @Autowired
-    private UserDetailsService userDetailService;
+    private MyUserDetailService userDetailService;
 
 
 
@@ -53,7 +54,7 @@ public class SecurityConfig {
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider(userDetailService))
+                .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
 
@@ -61,9 +62,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider  authenticationProvider(UserDetailsService userDetailsService) {
+    public AuthenticationProvider  authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
+        provider.setUserDetailsService(userDetailService);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
 
