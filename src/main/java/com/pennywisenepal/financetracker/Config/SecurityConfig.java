@@ -39,7 +39,7 @@ public class SecurityConfig {
     @Autowired
     private Jwtfilter jwtFilter;
     @Autowired
-    private MyUserDetailService userDetailService;
+    private UserDetailsService userDetailService;
 
 
 
@@ -55,6 +55,7 @@ public class SecurityConfig {
                         .authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .httpBasic(customizer -> customizer.disable())
                 .build();
 
 
