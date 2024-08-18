@@ -54,7 +54,9 @@ public class SecurityConfig {
                          .anyRequest()
                          .authenticated())
                  .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                 .formLogin(formLogin -> formLogin.disable()) // Disable form login
+                 .httpBasic(httpBasic -> httpBasic.disable());
                 return http.build();
 
 
