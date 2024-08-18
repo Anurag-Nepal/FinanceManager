@@ -40,10 +40,10 @@ public class SecurityConfig {
     @Autowired
     private UserDetailsService userDetailService;
 
-    public SecurityConfig(Jwtfilter jwtFilter) {
-        this.jwtFilter = jwtFilter;
+    @Bean
+    public Jwtfilter jwtFilter() {
+        return new Jwtfilter();
     }
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -65,7 +65,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
+    public DaoAuthenticationProvider  authenticationProvider(UserDetailsService userDetailsService) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
