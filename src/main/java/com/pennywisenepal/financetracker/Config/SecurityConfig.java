@@ -53,10 +53,11 @@ public class SecurityConfig {
                          .permitAll()
                          .anyRequest()
                          .authenticated())
-                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                  .formLogin(formLogin -> formLogin.disable()) // Disable form login
-                 .httpBasic(httpBasic -> httpBasic.disable());
+                 .httpBasic(httpBasic -> httpBasic.disable())
+                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                 .addFilterBefore(this.jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
                 return http.build();
 
 
