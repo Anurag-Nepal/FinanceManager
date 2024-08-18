@@ -26,7 +26,7 @@ public class IncomeController {
     public ResponseEntity<Income> addBalance(@RequestBody Income income)
     {
         incomeService.addBalance(income);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(income,HttpStatus.OK);
     }
     @GetMapping("/totalbalance")
     public double getTotalBalamce()
