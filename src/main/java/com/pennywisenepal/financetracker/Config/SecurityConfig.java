@@ -40,6 +40,10 @@ public class SecurityConfig {
     @Autowired
     private UserDetailsService userDetailService;
 
+    public SecurityConfig(Jwtfilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
+    }
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
