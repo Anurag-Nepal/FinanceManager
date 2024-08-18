@@ -1,7 +1,5 @@
 package com.pennywisenepal.financetracker.Controller;
 
-
-
 import jakarta.mail.MessagingException;
 import com.pennywisenepal.financetracker.Entity.OtpVerify;
 import com.pennywisenepal.financetracker.Entity.User;

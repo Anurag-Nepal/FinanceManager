@@ -50,6 +50,13 @@ public class UserService {
         if (user == null || user.getEmail() == null || user.getPassword() == null) {
             throw new IllegalArgumentException("User information is incomplete");
         }
+        if (userRepository.findByUsername(user.getUsername()) != null) {
+            throw new IllegalArgumentException("Username already exists");
+        }
+
+        if (userRepository.findByEmail(user.getEmail()) != null) {
+            throw new IllegalArgumentException("Email already exists");
+        }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setIsVerified(false);
@@ -93,6 +100,11 @@ public class UserService {
 
 
     public String Login(User user) {
+
+        User existingUser = userRepository.findByUsername(user.getUsername());
+        if (existingUser == null || !existingUser.getIsVerified()) {
+            return "User not found or not  Cant Proceed Further ";
+        }
         Authentication authentication = authManager
                 .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         if (authentication.isAuthenticated())
