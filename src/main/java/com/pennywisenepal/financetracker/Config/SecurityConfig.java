@@ -45,18 +45,17 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .cors(c -> c.configurationSource(corsConfigurationSource()))
-                .csrf(customizer -> customizer.disable())
-                .authorizeHttpRequests(request -> request
-                        .requestMatchers("/register", "/login", "/verify")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .httpBasic(customizer -> customizer.disable())
-                .build();
+         http
+                 .cors(c -> c.configurationSource(corsConfigurationSource()))
+                 .csrf(customizer -> customizer.disable())
+                 .authorizeHttpRequests(request -> request
+                         .requestMatchers("/register", "/login", "/verify")
+                         .permitAll()
+                         .anyRequest()
+                         .authenticated())
+                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                return http.build();
 
 
     }
