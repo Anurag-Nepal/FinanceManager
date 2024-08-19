@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -26,22 +27,31 @@ public class IncomeService {
     private IncomeRepository incomeRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private JwtService jwtService;
 
     private double  balance;
 
-    public User getCurrentUser() {
-        // Assuming Spring Security is used to authenticate users
+
+
+    private String getCurrentToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            User user = userRepository.findByUsername(userDetails.getUsername());
-            if (user != null) {
-                return user;
-            } else {
-                throw new RuntimeException("User not found in database");
-            }
+            return (String) authentication.getDetails();
         }
-        throw new RuntimeException("User not authenticated or no user details found");
+        return null;
+    }
+
+    public User getCurrentUser() {
+        // Assuming Spring Security is used to authenticate users
+        {
+            String username = jwtService.extractUserName(getCurrentToken());
+            if (username != null) {
+                return userRepository.findByUsername(username);
+            }
+            return null;
+
+        }
     }
 
     public void addBalance(Income income)
