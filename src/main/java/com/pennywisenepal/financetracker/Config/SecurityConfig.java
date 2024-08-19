@@ -57,8 +57,7 @@ public class SecurityConfig {
                  .formLogin(AbstractHttpConfigurer::disable) // Disable form login
                  .httpBasic(AbstractHttpConfigurer::disable)
                  .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                 .addFilter(jwtFilter)
-                 .addFilterBefore(this.jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
                 return http.build();
 //
 
