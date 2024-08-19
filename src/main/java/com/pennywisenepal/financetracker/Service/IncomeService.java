@@ -46,11 +46,10 @@ public class IncomeService {
         // Assuming Spring Security is used to authenticate users
         {
             String username = jwtService.extractUserName(getCurrentToken());
-            if (username != null) {
+            System.out.println(username);
+            {
                 return userRepository.findByUsername(username);
             }
-            return null;
-
         }
     }
 
