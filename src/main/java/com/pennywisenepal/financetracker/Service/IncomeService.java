@@ -2,28 +2,21 @@ package com.pennywisenepal.financetracker.Service;
 
 
 
-import jakarta.servlet.http.PushBuilder;
 import com.pennywisenepal.financetracker.Entity.Card;
 import com.pennywisenepal.financetracker.Entity.Income;
 import com.pennywisenepal.financetracker.Entity.User;
 import com.pennywisenepal.financetracker.Repository.IncomeRepository;
 import com.pennywisenepal.financetracker.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.swing.plaf.PanelUI;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -41,19 +34,24 @@ public class IncomeService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            return userRepository.findByUsername(userDetails.getUsername());
+            User user = userRepository.findByUsername(userDetails.getUsername());
+            if (user != null) {
+                return user;
+            } else {
+                throw new RuntimeException("User not found in database");
+            }
         }
-        throw new RuntimeException("User not authenticated");
+        throw new RuntimeException("User not authenticated or no user details found");
     }
 
-    public ResponseEntity<Income>addBalance( Income income)
+    public void addBalance(Income income)
 
     {
         User user = getCurrentUser();
         income.setIdate(LocalDate.now());
         income.setUser(user);
         incomeRepository.save(income);
-        return new ResponseEntity<>(income, HttpStatus.OK);
+        new ResponseEntity<>(income, HttpStatus.OK);
     }
 
     public double getTotalBalance()

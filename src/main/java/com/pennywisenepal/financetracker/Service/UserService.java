@@ -103,7 +103,7 @@ public class UserService {
 
         User existingUser = userRepository.findByUsername(user.getUsername());
         if (existingUser == null || !existingUser.getIsVerified()) {
-            return "User not found or Is Already Verified  Cant Proceed Further ";
+            return "User not found  Cant Proceed Further ";
         }
         Authentication authentication = authManager
                 .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));

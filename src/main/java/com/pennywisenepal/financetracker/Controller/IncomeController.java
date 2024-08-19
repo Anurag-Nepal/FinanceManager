@@ -15,7 +15,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @RestController
-
 @RequestMapping("/income")
 public class IncomeController {
 
