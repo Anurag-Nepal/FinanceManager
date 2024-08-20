@@ -12,33 +12,19 @@ import java.util.List;
 
 public interface ExpenseRepository extends JpaRepository<Expense,Integer> {
 
-
     LocalDate thirtyDaysAgo = LocalDate.now().minusDays(30);
-//    @Query("SELECT SUM(i.eamount) FROM Expense i WHERE i.edate >= :thirtyDaysAgo")
-//    double  getExpenseLastThirtyDays(@Param("thirtyDaysAgo") LocalDate thirtyDaysAgo);
 
-    @Query("SELECT SUM(i.eamount) FROM Expense i WHERE i.username = :username AND i.edate >= :thirtyDaysAgo")
-    double getExpenseLastThirtyDaysForUsername(@Param("user") String username, @Param("thirtyDaysAgo") LocalDate thirtyDaysAgo);
+    @Query("SELECT SUM(e.eamount) FROM Expense e WHERE e.user.username = :username AND e.edate >= :thirtyDaysAgo")
+    double getExpenseLastThirtyDaysForUsername(@Param("username") String username, @Param("thirtyDaysAgo") LocalDate thirtyDaysAgo);
 
+    List<Expense> findByUserUsernameAndEdateBetweenOrderByEdateDesc(String username, LocalDate startDate, LocalDate endDate);
 
-    //    List<Expense> findByEdateGreaterThanEqualAndEdateLessThanEqual(LocalDate startDate, LocalDate endDate);
-    List<Expense> findByUsernameAndEdateBetweenOrderByEdateDesc(String username, LocalDate startDate, LocalDate endDate);
+    List<Expense> findByUserUsernameAndEcategoryAndEdateBetween(String username, String ecategory, LocalDate startDate, LocalDate endDate);
 
+    @Query("SELECT COALESCE(SUM(e.eamount), 0) FROM Expense e WHERE e.ecategory = :ecategory AND e.edate BETWEEN :startDate AND :endDate AND e.user.username = :username")
+    double findSumByEcategoryAndUsername(@Param("ecategory") String ecategory, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, @Param("username") String username);
 
+    @Query("DELETE FROM Expense e WHERE e.eid = :eid AND e.user.username = :username")
+    void deleteByEidAndUsername(@Param("eid") int eid, @Param("username") String username);
 
-
-    //    List<Expense> findByEcategoryAndEdateBetween(String ecategory,LocalDate startDate, LocalDate endDate);
-    List<Expense> findByUsernameAndEcategoryAndEdateBetween(String username, String ecategory, LocalDate startDate, LocalDate endDate);
-
-
-
-
-    @Query("SELECT COALESCE(SUM(e.eamount), 0) FROM Expense e WHERE e.ecategory = :ecategory AND e.edate BETWEEN :startDate AND :endDate AND e.username = :username")
-    double findSumByEcategoryAndUsername(String ecategory, LocalDate startDate, LocalDate endDate, String username);
-
-
-
-
-    @Query("DELETE FROM Expense e WHERE e.eid = :eid AND e.username = :username")
-    void deleteByIdAndUsername(int eid, String username);
 }

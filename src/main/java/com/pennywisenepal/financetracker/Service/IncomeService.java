@@ -37,6 +37,8 @@ public class IncomeService {
     private UserService userService;
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     UserDetailsService userDetailsService;
@@ -46,7 +48,7 @@ public class IncomeService {
     public void addBalance(Income income)
 
     {
-        User user = userService.getCurrentUser();
+        User user = userRepository.findByUsername(userService.getcurrentusername());
         income.setIdate(LocalDate.now());
         income.setUser(user);
         incomeRepository.save(income);
@@ -56,8 +58,7 @@ public class IncomeService {
     public double getTotalBalance()
     {
        try{
-           User user = userService.getCurrentUser();
-           balance=incomeRepository.getIncomeLastThirtyDaysForUser(user,LocalDate.now().minusDays(30));
+           balance=incomeRepository.getIncomeLastThirtyDaysForUsername(userService.getcurrentusername(),LocalDate.now().minusDays(30));
            return balance;
        } catch (RuntimeException e) {
            throw new RuntimeException(e);
@@ -67,20 +68,19 @@ public class IncomeService {
 
     public List<Income> getLastMonthList()
     {
-        User user = userService.getCurrentUser();
         LocalDate startDate = LocalDate.now().minus(30, ChronoUnit.DAYS);
         LocalDate endDate = LocalDate.now().minus(1, ChronoUnit.DAYS);
-        List<Income> incomes = incomeRepository.findByUserAndIdateBetweenOrderByIdateDesc(user,startDate, endDate);
+        List<Income> incomes = incomeRepository.findByUserUsernameAndIdateBetweenOrderByIdateDesc(userService.getcurrentusername(),startDate, endDate);
         return incomes;
 
     }
 
     public List<Income> getLastWeekList()
     {
-        User user = userService.getCurrentUser();
+
         LocalDate startDate = LocalDate.now().minus(7, ChronoUnit.DAYS);
         LocalDate endDate = LocalDate.now().minus(1, ChronoUnit.DAYS);
-        List<Income> incomes = incomeRepository.findByUserAndIdateBetweenOrderByIdateDesc(user,startDate, endDate);
+        List<Income> incomes = incomeRepository.findByUserUsernameAndIdateBetweenOrderByIdateDesc(userService.getcurrentusername(),startDate, endDate);
         return incomes;
 
     }
@@ -90,76 +90,72 @@ public class IncomeService {
 
 
     public double getLastMonth() {
-        User user =userService.getCurrentUser();
+        User user =userRepository.findByUsername(userService.getcurrentusername());
         LocalDate startDate = LocalDate.now().minus(60, ChronoUnit.DAYS);
         LocalDate endDate = LocalDate.now().minus(31, ChronoUnit.DAYS);
-        List<Income> incomes = incomeRepository.findByUserAndIdateBetweenOrderByIdateDesc(user,startDate, endDate);
+        List<Income> incomes = incomeRepository.findByUserUsernameAndIdateBetweenOrderByIdateDesc(userService.getcurrentusername(), startDate, endDate);
         return incomes.stream().mapToDouble(Income::getIamount).sum();
     }
 
     public double getSalaryThisMonth() {
-        User user = userService.getCurrentUser();
+
         LocalDate startDate = LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        List<Income> salary = incomeRepository.findByUserAndIcategoryAndIdateBetween(user,"Salary",startDate, endDate);
+        List<Income> salary = incomeRepository.findByUserUsernameAndIcategoryAndIdateBetween(userService.getcurrentusername(),"Salary",startDate, endDate);
         return salary.stream().mapToDouble(Income::getIamount).sum();
     }
 
     public double getSalaryLastMonth() {
-        User user = userService.getCurrentUser();
+
         LocalDate startDate = LocalDate.now().minusDays(60);
         LocalDate endDate = LocalDate.now().minusDays(31);
-        List<Income> salary = incomeRepository.findByUserAndIcategoryAndIdateBetween(user,"Salary",startDate, endDate);
+        List<Income> salary = incomeRepository.findByUserUsernameAndIcategoryAndIdateBetween(userService.getcurrentusername(),"Salary",startDate, endDate);
         return salary.stream().mapToDouble(Income::getIamount).sum();
     }
 
 
     public double getInvestmentThisMonth() {
-        User user = userService.getCurrentUser();
+
         LocalDate startDate = LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        List<Income> salary = incomeRepository.findByUserAndIcategoryAndIdateBetween(user,"Investments",startDate, endDate);
+        List<Income> salary = incomeRepository.findByUserUsernameAndIcategoryAndIdateBetween(userService.getcurrentusername(), "Investments",startDate, endDate);
         return salary.stream().mapToDouble(Income::getIamount).sum();
     }
 
     public double getInvestmentLastMonth() {
-        User user = userService.getCurrentUser();
         LocalDate startDate = LocalDate.now().minusDays(60);
         LocalDate endDate = LocalDate.now().minusDays(31);
-        List<Income> salary = incomeRepository.findByUserAndIcategoryAndIdateBetween(user,"Investments",startDate, endDate);
+        List<Income> salary = incomeRepository.findByUserUsernameAndIcategoryAndIdateBetween(userService.getcurrentusername(), "Investments",startDate, endDate);
         return salary.stream().mapToDouble(Income::getIamount).sum();
     }
 
 
     public double getOtherThisMonth() {
-        User user =userService.getCurrentUser();
         LocalDate startDate = LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        List<Income> salary = incomeRepository.findByUserAndIcategoryAndIdateBetween(user,"Other",startDate, endDate);
+        List<Income> salary = incomeRepository.findByUserUsernameAndIcategoryAndIdateBetween(userService.getcurrentusername(), "Other",startDate, endDate);
         return salary.stream().mapToDouble(Income::getIamount).sum();
     }
 
     public double getOtherLastMonth() {
-        User user = userService.getCurrentUser();
         LocalDate startDate = LocalDate.now().minusDays(60);
         LocalDate endDate = LocalDate.now().minusDays(31);
-        List<Income> salary = incomeRepository.findByUserAndIcategoryAndIdateBetween(user,"Other",startDate, endDate);
+        List<Income> salary = incomeRepository.findByUserUsernameAndIcategoryAndIdateBetween(userService.getcurrentusername(), "Other",startDate, endDate);
         return salary.stream().mapToDouble(Income::getIamount).sum();
     }
 
     public double getRealstateThisMonth() {
-        User user =userService.getCurrentUser();
+
         LocalDate startDate = LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        List<Income> salary = incomeRepository.findByUserAndIcategoryAndIdateBetween(user,"Real Estate",startDate, endDate);
+        List<Income> salary = incomeRepository.findByUserUsernameAndIcategoryAndIdateBetween(userService.getcurrentusername(), "Real Estate",startDate, endDate);
         return salary.stream().mapToDouble(Income::getIamount).sum();
     }
 
     public double getRealstateLastMonth() {
-        User user = userService.getCurrentUser();
         LocalDate startDate = LocalDate.now().minusDays(60);
         LocalDate endDate = LocalDate.now().minusDays(31);
-        List<Income> salary = incomeRepository.findByUserAndIcategoryAndIdateBetween(user,"Real Estate",startDate, endDate);
+        List<Income> salary = incomeRepository.findByUserUsernameAndIcategoryAndIdateBetween(userService.getcurrentusername(), "Real Estate",startDate, endDate);
         return salary.stream().mapToDouble(Income::getIamount).sum();
     }
 
@@ -169,10 +165,9 @@ public class IncomeService {
 
 
     public double getThisMonth() {
-        User user = userService.getCurrentUser();
         LocalDate startDate = LocalDate.now().minus(30, ChronoUnit.DAYS);
         LocalDate endDate = LocalDate.now();
-        List<Income> incomes = incomeRepository.findByUserAndIdateBetweenOrderByIdateDesc(user,startDate, endDate);
+        List<Income> incomes = incomeRepository.findByUserUsernameAndIdateBetweenOrderByIdateDesc(userService.getcurrentusername(), startDate, endDate);
         return incomes.stream().mapToDouble(Income::getIamount).sum();
     }
 
@@ -213,7 +208,7 @@ public class IncomeService {
         double difference =Math.abs(thismonth-lastmonth);
         LocalDate startDate=LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        double totalSalary = incomeRepository.findSumByIcategoryAndUser("Salary",startDate,endDate,userService.getCurrentUser());
+        double totalSalary = incomeRepository.findSumByIcategoryAndUsername("Salary",startDate,endDate,userService.getcurrentusername());
         double percentage = 0;
         percentage=   (difference/lastmonth)*100;
         card.setPercentage(percentage);
@@ -236,7 +231,7 @@ public class IncomeService {
         double difference =Math.abs(thismonth-lastmonth);
         LocalDate startDate=LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        double totalInvestment = incomeRepository.findSumByIcategoryAndUser("Investments",startDate,endDate,userService.getCurrentUser());
+        double totalInvestment = incomeRepository.findSumByIcategoryAndUsername("Investments",startDate,endDate,userService.getcurrentusername());
         double percentage = 0;
         percentage=   (difference/lastmonth)*100;
         card.setPercentage(percentage);
@@ -253,13 +248,13 @@ public class IncomeService {
     }
     public Card cardforOthers() {
         Card card = new Card();
-        User user = userService.getCurrentUser();
+
         double lastmonth = getOtherLastMonth();
         double thismonth = getOtherThisMonth();
         double difference =Math.abs(thismonth-lastmonth);
         LocalDate startDate=LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        double totalOthers = incomeRepository.findSumByIcategoryAndUser("Other",startDate,endDate,user);
+        double totalOthers = incomeRepository.findSumByIcategoryAndUsername("Other",startDate,endDate, userService.getcurrentusername());
         double percentage = 0;
         percentage=   (difference/lastmonth)*100;
         card.setPercentage(percentage);
@@ -281,7 +276,7 @@ public class IncomeService {
         double difference =Math.abs(thismonth-lastmonth);
         LocalDate startDate=LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        double totalRs = incomeRepository.findSumByIcategoryAndUser("Real Estate",startDate,endDate,userService.getCurrentUser());
+        double totalRs = incomeRepository.findSumByIcategoryAndUsername("Real Estate",startDate,endDate,userService.getcurrentusername());
         double percentage = 0;
         percentage=   (difference/lastmonth)*100;
         card.setPercentage(percentage);

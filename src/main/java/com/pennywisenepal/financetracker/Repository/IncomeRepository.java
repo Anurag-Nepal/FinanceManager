@@ -16,41 +16,32 @@ public interface IncomeRepository extends JpaRepository<Income,Integer> {
 
 
 
-//    @Query("SELECT SUM(i.iamount) FROM Income i")
-//    Double getTotalBalance();
-
     LocalDate thirtyDaysAgo = LocalDate.now().minusDays(30);
-    @Query("SELECT SUM(i.iamount) FROM Income i WHERE i.username = :user AND i.idate >= :thirtyDaysAgo")
-    double getIncomeLastThirtyDaysForUser(@Param("user") User user, @Param("thirtyDaysAgo") LocalDate thirtyDaysAgo);
 
+    @Query("SELECT SUM(i.iamount) FROM Income i WHERE i.user.username = :username AND i.idate >= :thirtyDaysAgo")
+    double getIncomeLastThirtyDaysForUsername(@Param("username") String username, @Param("thirtyDaysAgo") LocalDate thirtyDaysAgo);
 
-    List<Income> findByUserAndIdateBetweenOrderByIdateDesc(User user, LocalDate startDate, LocalDate endDate);
+    List<Income> findByUserUsernameAndIdateBetweenOrderByIdateDesc(String username, LocalDate startDate, LocalDate endDate);
 
+    List<Income> findByUserUsernameAndIcategoryAndIdateBetween(String username, String icategory, LocalDate startDate, LocalDate endDate);
 
-
-    //    List<Income> findSalaryByIdateGreaterThanEqualAndIdateLessThanEqual(LocalDate startDate, LocalDate endDate);
-    List<Income> findByUserAndIcategoryAndIdateBetween(User user, String icategory, LocalDate startDate, LocalDate endDate);
-
-
-
-    @Query("SELECT COALESCE(SUM(i.iamount), 0) FROM Income i WHERE i.icategory = :icategory AND i.idate BETWEEN :startDate AND :endDate AND i.user = :user")
-    double findSumByIcategoryAndUser(String icategory, LocalDate startDate, LocalDate endDate, User user);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Query("SELECT COALESCE(SUM(i.iamount), 0) FROM Income i WHERE i.icategory = :icategory AND i.idate BETWEEN :startDate AND :endDate AND i.user.username = :username")
+    double findSumByIcategoryAndUsername(@Param("icategory") String icategory, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, @Param("username") String username);
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

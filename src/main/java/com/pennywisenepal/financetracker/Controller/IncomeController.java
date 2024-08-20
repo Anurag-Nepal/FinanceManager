@@ -2,6 +2,7 @@ package com.pennywisenepal.financetracker.Controller;
 
 
 import com.pennywisenepal.financetracker.Entity.User;
+import com.pennywisenepal.financetracker.Repository.UserRepository;
 import com.pennywisenepal.financetracker.Service.UserService;
 import jakarta.persistence.GeneratedValue;
 import com.pennywisenepal.financetracker.Entity.Card;
@@ -24,6 +25,8 @@ public class IncomeController {
     private IncomeService incomeService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping("/add")
     public ResponseEntity<Income> addBalance(@RequestBody Income income) {
@@ -91,7 +94,7 @@ public class IncomeController {
 //        return incomeService.getCurrentUser().getUsername();
 //    }
    public ResponseEntity<User> getCurrentUser() {
-        User currentUser = userService.getCurrentUser();
+        User currentUser = userRepository.findByUsername(userService.getcurrentusername());
         if (currentUser != null) {
             return ResponseEntity.ok(currentUser);
         } else {
