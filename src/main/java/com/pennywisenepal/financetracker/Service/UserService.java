@@ -35,12 +35,10 @@ public class UserService {
     @Autowired
     private EmailService emailService;
 
-    public User getCurrentUser() {
-        return userRepository.findByUsername(get1CurrentUser());
-    }
 
 
-    public String get1CurrentUser()
+
+    public String getcurrentusername()
     {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return username;
