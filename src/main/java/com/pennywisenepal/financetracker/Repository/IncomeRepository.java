@@ -20,7 +20,7 @@ public interface IncomeRepository extends JpaRepository<Income,Integer> {
 //    Double getTotalBalance();
 
     LocalDate thirtyDaysAgo = LocalDate.now().minusDays(30);
-    @Query("SELECT SUM(i.iamount) FROM Income i WHERE i.user = :user AND i.idate >= :thirtyDaysAgo")
+    @Query("SELECT SUM(i.iamount) FROM Income i WHERE i.username = :user AND i.idate >= :thirtyDaysAgo")
     double getIncomeLastThirtyDaysForUser(@Param("user") User user, @Param("thirtyDaysAgo") LocalDate thirtyDaysAgo);
 
 

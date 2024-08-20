@@ -17,7 +17,7 @@ public interface ExpenseRepository extends JpaRepository<Expense,Integer> {
 //    @Query("SELECT SUM(i.eamount) FROM Expense i WHERE i.edate >= :thirtyDaysAgo")
 //    double  getExpenseLastThirtyDays(@Param("thirtyDaysAgo") LocalDate thirtyDaysAgo);
 
-    @Query("SELECT SUM(i.eamount) FROM Expense i WHERE i.user = :user AND i.edate >= :thirtyDaysAgo")
+    @Query("SELECT SUM(i.eamount) FROM Expense i WHERE i.username = :username AND i.edate >= :thirtyDaysAgo")
     double getExpenseLastThirtyDaysForUsername(@Param("user") String username, @Param("thirtyDaysAgo") LocalDate thirtyDaysAgo);
 
 
