@@ -58,7 +58,7 @@ public class IncomeService {
     public double getTotalBalance()
     {
        try{
-           balance=incomeRepository.getIncomeLastThirtyDaysForUsername(userService.getcurrentusername(),LocalDate.now().minusDays(30));
+           balance=incomeRepository.getIncomeLastThirtyDaysForUserUsername(userService.getcurrentusername(),LocalDate.now().minusDays(30));
            return balance;
        } catch (RuntimeException e) {
            throw new RuntimeException(e);
@@ -208,7 +208,7 @@ public class IncomeService {
         double difference =Math.abs(thismonth-lastmonth);
         LocalDate startDate=LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        double totalSalary = incomeRepository.findSumByIcategoryAndUsername("Salary",startDate,endDate,userService.getcurrentusername());
+        double totalSalary = incomeRepository.findSumByIcategoryAndUserUsername("Salary",startDate,endDate,userService.getcurrentusername());
         double percentage = 0;
         percentage=   (difference/lastmonth)*100;
         card.setPercentage(percentage);
@@ -231,7 +231,7 @@ public class IncomeService {
         double difference =Math.abs(thismonth-lastmonth);
         LocalDate startDate=LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        double totalInvestment = incomeRepository.findSumByIcategoryAndUsername("Investments",startDate,endDate,userService.getcurrentusername());
+        double totalInvestment = incomeRepository.findSumByIcategoryAndUserUsername("Investments",startDate,endDate,userService.getcurrentusername());
         double percentage = 0;
         percentage=   (difference/lastmonth)*100;
         card.setPercentage(percentage);
@@ -254,7 +254,7 @@ public class IncomeService {
         double difference =Math.abs(thismonth-lastmonth);
         LocalDate startDate=LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        double totalOthers = incomeRepository.findSumByIcategoryAndUsername("Other",startDate,endDate, userService.getcurrentusername());
+        double totalOthers = incomeRepository.findSumByIcategoryAndUserUsername("Other",startDate,endDate, userService.getcurrentusername());
         double percentage = 0;
         percentage=   (difference/lastmonth)*100;
         card.setPercentage(percentage);
@@ -276,7 +276,7 @@ public class IncomeService {
         double difference =Math.abs(thismonth-lastmonth);
         LocalDate startDate=LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        double totalRs = incomeRepository.findSumByIcategoryAndUsername("Real Estate",startDate,endDate,userService.getcurrentusername());
+        double totalRs = incomeRepository.findSumByIcategoryAndUserUsername("Real Estate",startDate,endDate,userService.getcurrentusername());
         double percentage = 0;
         percentage=   (difference/lastmonth)*100;
         card.setPercentage(percentage);

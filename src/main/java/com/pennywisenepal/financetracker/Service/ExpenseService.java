@@ -51,7 +51,7 @@ public class ExpenseService {
     {
 
 
-        expense=expenseRepository.getExpenseLastThirtyDaysForUsername(userService.getcurrentusername(),LocalDate.now().minusDays(30));
+        expense=expenseRepository.getExpenseLastThirtyDaysForUserUsername(userService.getcurrentusername(),LocalDate.now().minusDays(30));
         return expense;
     }
 
@@ -187,7 +187,7 @@ public class ExpenseService {
         double difference =Math.abs(thismonth-lastmonth);
         LocalDate startDate=LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        double total = expenseRepository.findSumByEcategoryAndUsername("Groceries",startDate,endDate,userService.getcurrentusername());
+        double total = expenseRepository.findSumByEcategoryAndUserUsername("Groceries",startDate,endDate,userService.getcurrentusername());
         double percentage = 0;
         percentage=   (difference/lastmonth)*100;
         card.setPercentage(percentage);
@@ -209,7 +209,7 @@ public class ExpenseService {
         double difference =Math.abs(thismonth-lastmonth);
         LocalDate startDate=LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        double total = expenseRepository.findSumByEcategoryAndUsername("Entertaintment",startDate,endDate,userService.getcurrentusername());
+        double total = expenseRepository.findSumByEcategoryAndUserUsername("Entertaintment",startDate,endDate,userService.getcurrentusername());
         double percentage = 0;
         percentage=   (difference/lastmonth)*100;
         card.setPercentage(percentage);
@@ -230,7 +230,7 @@ public class ExpenseService {
         double difference =Math.abs(thismonth-lastmonth);
         LocalDate startDate=LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        double total = expenseRepository.findSumByEcategoryAndUsername("Others",startDate,endDate,userService.getcurrentusername());
+        double total = expenseRepository.findSumByEcategoryAndUserUsername("Others",startDate,endDate,userService.getcurrentusername());
         double percentage = 0;
         percentage=   (difference/lastmonth)*100;
         card.setPercentage(percentage);
@@ -251,7 +251,7 @@ public class ExpenseService {
         double difference =Math.abs(thismonth-lastmonth);
         LocalDate startDate=LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        double total = expenseRepository.findSumByEcategoryAndUsername("Bills",startDate,endDate,userService.getcurrentusername());
+        double total = expenseRepository.findSumByEcategoryAndUserUsername("Bills",startDate,endDate,userService.getcurrentusername());
         double percentage = 0;
         percentage=   (difference/lastmonth)*100;
         card.setPercentage(percentage);
@@ -270,7 +270,7 @@ public class ExpenseService {
     public String deleteExpense(@PathVariable  int eid)
     {
 
-        expenseRepository.deleteByEidAndUsername(eid,userService.getcurrentusername());
+        expenseRepository.deleteByEidAndUserUsername(eid,userService.getcurrentusername());
         return "Entry Deleted Successfully";
     }
 
