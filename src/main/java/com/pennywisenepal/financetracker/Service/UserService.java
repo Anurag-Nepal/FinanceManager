@@ -36,13 +36,13 @@ public class UserService {
     private EmailService emailService;
 
     public User getCurrentUser() {
-        // Assuming Spring Security is used to authenticate users
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            // Assuming you have a method to convert UserDetails to your User entity
             return userRepository.findByUsername(userDetails.getUsername());
         }
-        throw new RuntimeException("User not authenticated");
+        return null; // Or throw an exception if preferred
     }
 
 
@@ -118,5 +118,7 @@ public class UserService {
         return randomInt;
 
     }
+
+
 }
 

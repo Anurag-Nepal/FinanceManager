@@ -25,28 +25,16 @@ public class ExpenseService {
     @Autowired
     private ExpenseRepository expenseRepository;
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     private double  expense;
 
 
 
-
-    public User getCurrentUser() {
-        // Assuming Spring Security is used to authenticate users
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            return userRepository.findByUsername(userDetails.getUsername());
-        }
-        throw new RuntimeException("User not authenticated");
-    }
-
-
     public ResponseEntity<Expense> addExpense(ExpenseAdder expenseAdder)
 
     {
-        User user = getCurrentUser();
+        User user =userService. getCurrentUser();
         Expense expense = new Expense();
         expense.setUser(user);
         expense.setEdate(LocalDate.now());
@@ -60,7 +48,7 @@ public class ExpenseService {
     public double getTotalExpense()
     {
 
-        User user = getCurrentUser();
+        User user = userService. getCurrentUser();
         expense=expenseRepository.getExpenseLastThirtyDaysForUser(user,LocalDate.now().minusDays(30));
         return expense;
     }
@@ -68,7 +56,7 @@ public class ExpenseService {
 
     public List<Expense> getLastMonthList()
     {
-        User user = getCurrentUser();
+        User user = userService. getCurrentUser();
         LocalDate startDate = LocalDate.now().minus(30, ChronoUnit.DAYS);
         LocalDate endDate = LocalDate.now().minus(1, ChronoUnit.DAYS);
         List<Expense> expenses = expenseRepository.findByUserAndEdateBetweenOrderByEdateDesc(user,startDate, endDate);
@@ -78,7 +66,7 @@ public class ExpenseService {
 
     public List<Expense> getLastWeekList()
     {
-        User user = getCurrentUser();
+        User user = userService. getCurrentUser();
         LocalDate startDate = LocalDate.now().minus(7, ChronoUnit.DAYS);
         LocalDate endDate = LocalDate.now().minus(1, ChronoUnit.DAYS);
         List<Expense> expenses = expenseRepository.findByUserAndEdateBetweenOrderByEdateDesc(user,startDate, endDate);
@@ -92,7 +80,7 @@ public class ExpenseService {
     public double getThisMonth() {
         LocalDate startDate = LocalDate.now().minus(30, ChronoUnit.DAYS);
         LocalDate endDate = LocalDate.now();
-        User user = getCurrentUser();
+        User user =userService. getCurrentUser();
         List<Expense> expenses = expenseRepository.findByUserAndEdateBetweenOrderByEdateDesc(user,startDate, endDate);
         return expenses.stream().mapToDouble(Expense::getEamount).sum();
     }
@@ -100,7 +88,7 @@ public class ExpenseService {
     public double getLastMonth() {
         LocalDate startDate = LocalDate.now().minus(60, ChronoUnit.DAYS);
         LocalDate endDate = LocalDate.now().minus(31, ChronoUnit.DAYS);
-        User user = getCurrentUser();
+        User user = userService. getCurrentUser();
         List<Expense> expenses = expenseRepository.findByUserAndEdateBetweenOrderByEdateDesc(user,startDate, endDate);
         return expenses.stream().mapToDouble(Expense::getEamount).sum();
     }
@@ -109,7 +97,7 @@ public class ExpenseService {
     public double getGroceriesThisMonth() {
         LocalDate startDate = LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        User user = getCurrentUser();
+        User user =userService. getCurrentUser();
         List<Expense> grocery = expenseRepository.findByUserAndEcategoryAndEdateBetween(user,"Groceries",startDate,endDate);
         return grocery.stream().mapToDouble(Expense::getEamount).sum();
     }
@@ -117,7 +105,7 @@ public class ExpenseService {
     public double getGroceriesLastMonth() {
         LocalDate startDate = LocalDate.now().minusDays(60);
         LocalDate endDate = LocalDate.now().minusDays(31);
-        User user = getCurrentUser();
+        User user = userService. getCurrentUser();
         List<Expense> grocery = expenseRepository.findByUserAndEcategoryAndEdateBetween(user,"Groceries",startDate, endDate);
         return grocery.stream().mapToDouble(Expense::getEamount).sum();
     }
@@ -127,7 +115,7 @@ public class ExpenseService {
     public double getBillsThisMonth() {
         LocalDate startDate = LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        User user = getCurrentUser();
+        User user =userService. getCurrentUser();
         List<Expense> bills = expenseRepository.findByUserAndEcategoryAndEdateBetween(user,"Bills",startDate,endDate);
         return bills.stream().mapToDouble(Expense::getEamount).sum();
     }
@@ -135,7 +123,7 @@ public class ExpenseService {
     public double getBillsLastMonth() {
         LocalDate startDate = LocalDate.now().minusDays(60);
         LocalDate endDate = LocalDate.now().minusDays(31);
-        User user = getCurrentUser();
+        User user = userService. getCurrentUser();
         List<Expense> bills = expenseRepository.findByUserAndEcategoryAndEdateBetween(user,"Bills",startDate, endDate);
         return bills.stream().mapToDouble(Expense::getEamount).sum();
     }
@@ -145,7 +133,7 @@ public class ExpenseService {
     public double getEntertaintmentThisMOnth() {
         LocalDate startDate = LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        User user = getCurrentUser();
+        User user = userService. getCurrentUser();
         List<Expense> entertaintment = expenseRepository.findByUserAndEcategoryAndEdateBetween(user,"Entertaintment",startDate,endDate);
         return entertaintment.stream().mapToDouble(Expense::getEamount).sum();
     }
@@ -153,7 +141,7 @@ public class ExpenseService {
     public double getEntertaintmentlatMonth() {
         LocalDate startDate = LocalDate.now().minusDays(60);
         LocalDate endDate = LocalDate.now().minusDays(31);
-        User user = getCurrentUser();
+        User user = userService. getCurrentUser();
         List<Expense> entertaintment = expenseRepository.findByUserAndEcategoryAndEdateBetween(user,"Entertaintment",startDate, endDate);
         return entertaintment.stream().mapToDouble(Expense::getEamount).sum();
     }
@@ -162,7 +150,7 @@ public class ExpenseService {
     public double getOthersThisMonth() {
         LocalDate startDate = LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        User user = getCurrentUser();
+        User user = userService. getCurrentUser();
         List<Expense> others = expenseRepository.findByUserAndEcategoryAndEdateBetween(user,"Others",startDate,endDate);
         return others.stream().mapToDouble(Expense::getEamount).sum();
     }
@@ -170,7 +158,7 @@ public class ExpenseService {
     public double getOthersLastMonth() {
         LocalDate startDate = LocalDate.now().minusDays(60);
         LocalDate endDate = LocalDate.now().minusDays(31);
-        User user = getCurrentUser();
+        User user = userService. getCurrentUser();
         List<Expense> others = expenseRepository.findByUserAndEcategoryAndEdateBetween(user,"Others",startDate, endDate);
         return others.stream().mapToDouble(Expense::getEamount).sum();
     }
@@ -204,7 +192,7 @@ public class ExpenseService {
         double difference =Math.abs(thismonth-lastmonth);
         LocalDate startDate=LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        double total = expenseRepository.findSumByEcategory("Groceries",startDate,endDate);
+        double total = expenseRepository.findSumByEcategoryAndUser("Groceries",startDate,endDate,userService.getCurrentUser());
         double percentage = 0;
         percentage=   (difference/lastmonth)*100;
         card.setPercentage(percentage);
@@ -226,7 +214,7 @@ public class ExpenseService {
         double difference =Math.abs(thismonth-lastmonth);
         LocalDate startDate=LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        double total = expenseRepository.findSumByEcategory("Entertaintment",startDate,endDate);
+        double total = expenseRepository.findSumByEcategoryAndUser("Entertaintment",startDate,endDate,userService.getCurrentUser());
         double percentage = 0;
         percentage=   (difference/lastmonth)*100;
         card.setPercentage(percentage);
@@ -247,7 +235,7 @@ public class ExpenseService {
         double difference =Math.abs(thismonth-lastmonth);
         LocalDate startDate=LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        double total = expenseRepository.findSumByEcategory("Others",startDate,endDate);
+        double total = expenseRepository.findSumByEcategoryAndUser("Others",startDate,endDate,userService.getCurrentUser());
         double percentage = 0;
         percentage=   (difference/lastmonth)*100;
         card.setPercentage(percentage);
@@ -268,7 +256,7 @@ public class ExpenseService {
         double difference =Math.abs(thismonth-lastmonth);
         LocalDate startDate=LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        double total = expenseRepository.findSumByEcategory("Bills",startDate,endDate);
+        double total = expenseRepository.findSumByEcategoryAndUser("Bills",startDate,endDate,userService.getCurrentUser());
         double percentage = 0;
         percentage=   (difference/lastmonth)*100;
         card.setPercentage(percentage);
@@ -286,7 +274,7 @@ public class ExpenseService {
 
     public String deleteExpense(@PathVariable  int eid)
     {
-        User user = getCurrentUser();
+        User user = userService.getCurrentUser();
         expenseRepository.deleteById(eid);
         return "Entry Deleted Successfully";
     }

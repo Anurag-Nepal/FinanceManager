@@ -32,11 +32,9 @@ public interface IncomeRepository extends JpaRepository<Income,Integer> {
     List<Income> findByUserAndIcategoryAndIdateBetween(User user, String icategory, LocalDate startDate, LocalDate endDate);
 
 
-    @Query("SELECT COALESCE(SUM(i.iamount), 0) FROM Income i WHERE i.icategory = :icategory AND i.idate BETWEEN :startDate AND :endDate")
-    double findSumByIcategory(String icategory,LocalDate startDate,LocalDate endDate);
 
-
-
+    @Query("SELECT COALESCE(SUM(i.iamount), 0) FROM Income i WHERE i.icategory = :icategory AND i.idate BETWEEN :startDate AND :endDate AND i.user = :user")
+    double findSumByIcategoryAndUser(String icategory, LocalDate startDate, LocalDate endDate, User user);
 
 
 

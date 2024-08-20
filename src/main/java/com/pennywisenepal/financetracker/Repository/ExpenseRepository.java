@@ -33,9 +33,8 @@ public interface ExpenseRepository extends JpaRepository<Expense,Integer> {
 
 
 
-    @Query("SELECT COALESCE(SUM(i.eamount), 0) FROM Expense i WHERE i.ecategory = :ecategory AND i.edate BETWEEN :startDate AND :endDate")
-    double findSumByEcategory(String ecategory,LocalDate startDate,LocalDate endDate);
-
+    @Query("SELECT COALESCE(SUM(e.eamount), 0) FROM Expense e WHERE e.ecategory = :ecategory AND e.edate BETWEEN :startDate AND :endDate AND e.user = :user")
+    double findSumByEcategoryAndUser(String ecategory, LocalDate startDate, LocalDate endDate, User user);
 
 
 
