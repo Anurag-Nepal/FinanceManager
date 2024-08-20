@@ -36,15 +36,15 @@ public class UserService {
     private EmailService emailService;
 
     public User getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            // Assuming you have a method to convert UserDetails to your User entity
-            return userRepository.findByUsername(userDetails.getUsername());
-        }
-        return null; // Or throw an exception if preferred
+        return userRepository.findByUsername(get1CurrentUser());
     }
 
+
+    public String get1CurrentUser()
+    {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return username;
+    }
 
     public String register(@RequestBody User user) throws MessagingException {
         if (user == null || user.getEmail() == null || user.getPassword() == null) {
