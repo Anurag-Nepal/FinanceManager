@@ -34,10 +34,7 @@ public class IncomeController {
         return "Success";
     }
 
-    @GetMapping("/totalbalance")
-    public double getTotalBalamce() {
-        return incomeService.getTotalBalance();
-    }
+
 
 
     @GetMapping("/weekbalance")
