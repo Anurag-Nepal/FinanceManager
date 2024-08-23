@@ -1,13 +1,11 @@
-#FROM eclipse-temurin:22-jdk-alpine
-#VOLUME /tmp
-#COPY target/*.jar app.jar
-#ENTRYPOINT ["java","-jar","/app.jar"]
-#EXPOSE 8080
-
 FROM eclipse-temurin:17-jdk-jammy AS base
 WORKDIR /service
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
+
+# Add executable permissions to mvnw
+RUN chmod +x mvnw
+
 RUN ./mvnw dependency:resolve
 COPY src src
 
@@ -16,11 +14,9 @@ RUN ./mvnw clean package -DskipTests
 
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /service
-COPY --from=build /service/target/spring-petclinic-*.jar spring-petclinic.jar
-CMD ["java", "-jar", "target/financemanager.jar"]
+COPY --from=build /service/target/pennywisenepal.jar pennywisenepal.jar
+CMD ["java", "-jar", "pennywisenepal.jar"]
 
-
-#
 ## Use an appropriate base image
 #FROM openjdk:11-jdk
 #
