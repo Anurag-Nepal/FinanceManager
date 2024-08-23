@@ -57,13 +57,11 @@ public class IncomeService {
 
     public double getTotalBalance()
     {
-       try{
-           balance=incomeRepository.getIncomeLastThirtyDaysForUserUsername(userService.getcurrentusername(),LocalDate.now().minusDays(30));
+        balance=0;
+        balance=incomeRepository.getIncomeLastThirtyDaysForUserUsername(userService.getcurrentusername(),LocalDate.now().minusDays(30));
            return balance;
-       } catch (RuntimeException e) {
-           throw new RuntimeException(e);
        }
-    }
+
 
 
     public List<Income> getLastMonthList()
