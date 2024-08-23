@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk-jammy AS base
+FROM eclipse-temurin:22-jdk-jammy AS base
 WORKDIR /service
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
@@ -12,7 +12,7 @@ COPY src src
 FROM base AS build
 RUN ./mvnw clean package -DskipTests
 
-FROM eclipse-temurin:17-jre-jammy
+FROM eclipse-temurin:22-jre-jammy
 WORKDIR /service
 COPY --from=build /service/target/pennywisenepal.jar pennywisenepal.jar
 CMD ["java", "-jar", "pennywisenepal.jar"]
