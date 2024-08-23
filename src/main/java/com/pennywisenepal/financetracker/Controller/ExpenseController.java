@@ -22,10 +22,10 @@ public class ExpenseController {
 
     @PostMapping("/add")
 //Adding a New Expense to the Database
-    public ResponseEntity<Expense> addExpense(@RequestBody ExpenseAdder expenseAdder)
+    public String addExpense(@RequestBody ExpenseAdder expenseAdder)
     {
         expenseService.addExpense(expenseAdder);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return "Successful";
 
     }
 

@@ -33,7 +33,7 @@ public class ExpenseService {
 
 
 
-    public ResponseEntity<Expense> addExpense(ExpenseAdder expenseAdder)
+    public String addExpense(ExpenseAdder expenseAdder)
 
     {
         User user =userRepository.findByUsername(userService.getcurrentusername());
@@ -44,7 +44,7 @@ public class ExpenseService {
         expense.setEname(expenseAdder.getEname());
         expense.setEamount(expenseAdder.getEamount());
         expenseRepository.save(expense);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return "Expense Added Successfully";
     }
 
     public double getTotalExpense()

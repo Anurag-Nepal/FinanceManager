@@ -45,22 +45,15 @@ public class IncomeService {
     private double  balance;
 
 
-    public void addBalance(Income income)
+    public String addBalance(Income income)
 
     {
         User user = userRepository.findByUsername(userService.getcurrentusername());
         income.setIdate(LocalDate.now());
         income.setUser(user);
         incomeRepository.save(income);
-        new ResponseEntity<>(income, HttpStatus.OK);
+       return "Income added Successfully";
     }
-
-    public double getTotalBalance()
-    {
-        balance=0;
-        balance=incomeRepository.getIncomeLastThirtyDaysForUserUsername(userService.getcurrentusername(),LocalDate.now().minusDays(30));
-           return balance;
-       }
 
 
 
@@ -88,7 +81,6 @@ public class IncomeService {
 
 
     public double getLastMonth() {
-        User user =userRepository.findByUsername(userService.getcurrentusername());
         LocalDate startDate = LocalDate.now().minus(60, ChronoUnit.DAYS);
         LocalDate endDate = LocalDate.now().minus(31, ChronoUnit.DAYS);
         List<Income> incomes = incomeRepository.findByUserUsernameAndIdateBetweenOrderByIdateDesc(userService.getcurrentusername(), startDate, endDate);
@@ -180,8 +172,9 @@ public class IncomeService {
         double thismonth = getThisMonth();
         double difference =Math.abs(thismonth-lastmonth);
         double percentage = ((difference/lastmonth)*100);
+        balance=incomeRepository.getIncomeLastThirtyDaysForUserUsername(userService.getcurrentusername(),LocalDate.now().minusDays(30));
         card.setPercentage(percentage);
-        card.setTotal(getTotalBalance());
+        card.setTotal(balance);
         if(thismonth < lastmonth)
         {
             card.setMessage("Decreased By "+difference);

@@ -29,9 +29,9 @@ public class IncomeController {
     private UserRepository userRepository;
 
     @PostMapping("/add")
-    public ResponseEntity<Income> addBalance(@RequestBody Income income) {
+    public String addBalance(@RequestBody Income income) {
         incomeService.addBalance(income);
-        return new ResponseEntity<>(income, HttpStatus.OK);
+        return "Success";
     }
 
     @GetMapping("/totalbalance")
