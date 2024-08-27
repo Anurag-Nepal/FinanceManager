@@ -6,6 +6,8 @@ import com.pennywisenepal.financetracker.Entity.Card;
 import com.pennywisenepal.financetracker.Entity.Expense;
 import com.pennywisenepal.financetracker.Entity.Income;
 
+import com.pennywisenepal.financetracker.Entity.User;
+import com.pennywisenepal.financetracker.Repository.UserRepository;
 import com.pennywisenepal.financetracker.Service.ExpenseService;
 import com.pennywisenepal.financetracker.Service.IncomeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,8 @@ public class HomepageListDisplayer {
     private final ExpenseService expenseService;
     @Autowired
     private final IncomeService incomeService;
+    @Autowired
+    private  UserRepository userRepository;
 
     public HomepageListDisplayer(ExpenseService expenseService, IncomeService incomeService) {
         this.expenseService = expenseService;
@@ -118,6 +122,17 @@ public class HomepageListDisplayer {
 
 
     }
+    @GetMapping("/user")
+    public String currentuser()
+    {
+        User user = new User();
+        user =userRepository.findByUsername(currentuser());
+        user.getUsername();
+
+    }
+
+
+
 }
 
 

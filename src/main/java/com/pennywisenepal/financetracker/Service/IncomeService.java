@@ -267,7 +267,7 @@ public class IncomeService {
         double difference =Math.abs(thismonth-lastmonth);
         LocalDate startDate=LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
-        double totalRs = incomeRepository.findSumByIcategoryAndUserUsername("Real Estate",startDate,endDate,userService.getcurrentusername());
+        double totalRs = incomeRepository.findSumByIcategoryAndUserUsername("RealEstate",startDate,endDate,userService.getcurrentusername());
         double percentage = 0;
         percentage=   (difference/lastmonth)*100;
         card.setPercentage(percentage);
