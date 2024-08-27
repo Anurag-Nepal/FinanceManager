@@ -37,6 +37,10 @@ public class ExpenseService {
 
     {
         User user =userRepository.findByUsername(userService.getcurrentusername());
+        if (user == null) {
+            System.out.println("User not found for the provided username.");
+            throw new RuntimeException("User not found");
+        }
         Expense expense = new Expense();
         expense.setUser(user);
         expense.setEdate(LocalDate.now());
@@ -49,8 +53,6 @@ public class ExpenseService {
 
     public double getTotalExpense()
     {
-
-
         expense=expenseRepository.getExpenseLastThirtyDaysForUserUsername(userService.getcurrentusername(),LocalDate.now().minusDays(30));
         return expense;
     }
