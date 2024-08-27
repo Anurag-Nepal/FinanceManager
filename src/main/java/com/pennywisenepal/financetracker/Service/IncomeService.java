@@ -42,7 +42,7 @@ public class IncomeService {
 
     @Autowired
     UserDetailsService userDetailsService;
-    private double  balance;
+    private Double balance;
 
 
     public String addBalance(Income income)
@@ -174,7 +174,7 @@ public class IncomeService {
         double percentage = ((difference/lastmonth)*100);
         balance=incomeRepository.getIncomeLastThirtyDaysForUserUsername(userService.getcurrentusername(),LocalDate.now().minusDays(30));
         card.setPercentage(percentage);
-        card.setTotal(balance);
+        card.setTotal( balance != null ? balance : 0.0);
         if(thismonth < lastmonth)
         {
             card.setMessage("Decreased By "+difference);
