@@ -123,11 +123,13 @@ public class HomepageListDisplayer {
 
     }
     @GetMapping("/user")
-    public String currentuser()
+    public User currentuser()
     {
         User user = new User();
-        user =userRepository.findByUsername(currentuser());
+        user =userRepository.findByUsername(currentuser().getUsername());
         user.getUsername();
+        return user;
+
 
     }
 
