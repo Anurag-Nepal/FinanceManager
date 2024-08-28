@@ -2,16 +2,19 @@ package com.pennywisenepal.financetracker.Controller;
 
 
 
-import com.pennywisenepal.financetracker.Entity.Card;
-import com.pennywisenepal.financetracker.Entity.Expense;
-import com.pennywisenepal.financetracker.Entity.Income;
+import com.pennywisenepal.financetracker.Entity.*;
 
-import com.pennywisenepal.financetracker.Entity.User;
 import com.pennywisenepal.financetracker.Repository.UserRepository;
+import com.pennywisenepal.financetracker.Service.EmailService;
 import com.pennywisenepal.financetracker.Service.ExpenseService;
 import com.pennywisenepal.financetracker.Service.IncomeService;
+import com.pennywisenepal.financetracker.Service.UserService;
+import jakarta.mail.AuthenticationFailedException;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -30,7 +33,13 @@ public class HomepageListDisplayer {
     @Autowired
     private final IncomeService incomeService;
     @Autowired
-    private  UserRepository userRepository;
+    private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private EmailService emailService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public HomepageListDisplayer(ExpenseService expenseService, IncomeService incomeService) {
         this.expenseService = expenseService;
@@ -101,8 +110,6 @@ public class HomepageListDisplayer {
     }
 
 
-
-
     private static class SortableWrapper {
         private LocalDate date;
         private Object item;
@@ -122,19 +129,33 @@ public class HomepageListDisplayer {
 
 
     }
+
     @GetMapping("/user")
-    public User currentuser()
-    {
-        User user = new User();
-        user =userRepository.findByUsername(currentuser().getUsername());
-        user.getUsername();
-        return user;
-
-
+    public Profile currentuser() {
+        User user = userRepository.findByUsername(userService.getcurrentusername());
+        Profile profile = new Profile();
+        String name = user.getUsername().substring(0, 8);
+        profile.setUsername("@" + name.toLowerCase());
+        profile.setName(name);
+        return profile;
     }
-
-
-
+//    @PostMapping("/forgot")
+//    public ResponseEntity<String> forgotPassword(@RequestBody ChangePassword password) {
+//        String email = password.getEmail();
+//        String oldPassword = (password.getOldPasssword());
+//        String newPassword = password.getNewPassword();
+//
+//        User user = userRepository.findByEmail(email);
+//
+//        if (user != null && password.getOldPasssword()== user.getPassword() && user.getIsVerified()) {
+//            String hashedPassword = passwordEncoder.encode(newPassword);
+//            user.setPassword(hashedPassword);
+//            userRepository.save(user);
+//            return ResponseEntity.ok("Password updated successfully.");
+//        } else {
+//            return ResponseEntity.badRequest().body("Invalid email or password.");
+//        }
+//    }
 }
 
 
