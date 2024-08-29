@@ -177,7 +177,10 @@ public class ExpenseService {
 
         else
             card.setMessage("Increased By " +difference);
-
+if(card.getTotal()==0)
+{
+    card.setTotal(0);
+}
         return card;
     }
 
