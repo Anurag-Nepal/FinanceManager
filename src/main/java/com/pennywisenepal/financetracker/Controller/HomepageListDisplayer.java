@@ -47,9 +47,8 @@ public class HomepageListDisplayer {
     }
 
 
-    //Sorting this list is required and remanining
     @GetMapping("/random")
-    public List<Object> random1(@PathVariable(required = false) Integer deleteId) {
+    public List<Object> random1() {
         List<Expense> expenses = new ArrayList<>(expenseService.getLastWeekList());
         List<Income> incomes = new ArrayList<>(incomeService.getLastWeekList());
 
@@ -65,11 +64,9 @@ public class HomepageListDisplayer {
         wrappers.sort(Comparator.comparing(SortableWrapper::getDate).reversed());
 
         // Extract sorted items
-        List<Object> sortedItems = new ArrayList<>();
-        for (SortableWrapper wrapper : wrappers) {
-            sortedItems.add(wrapper.getItem());
-        }
-
+        List<Object> sortedItems = wrappers.stream()
+                .map(SortableWrapper::getItem)
+                .collect(Collectors.toList());
 
         return sortedItems;
     }
@@ -139,23 +136,26 @@ public class HomepageListDisplayer {
         profile.setName(name);
         return profile;
     }
-//    @PostMapping("/forgot")
-//    public ResponseEntity<String> forgotPassword(@RequestBody ChangePassword password) {
-//        String email = password.getEmail();
-//        String oldPassword = (password.getOldPasssword());
-//        String newPassword = password.getNewPassword();
-//
-//        User user = userRepository.findByEmail(email);
-//
-//        if (user != null && password.getOldPasssword()== user.getPassword() && user.getIsVerified()) {
-//            String hashedPassword = passwordEncoder.encode(newPassword);
-//            user.setPassword(hashedPassword);
-//            userRepository.save(user);
-//            return ResponseEntity.ok("Password updated successfully.");
-//        } else {
-//            return ResponseEntity.badRequest().body("Invalid email or password.");
-//        }
-//    }
+
+
+
+    @PostMapping("/forgot")
+    public ResponseEntity<String> forgotPassword(@RequestBody ChangePassword password) {
+        String email = password.getEmail();
+        String oldPassword = (password.getOldPassword());
+        String newPassword = password.getNewPassword();
+        User user = userRepository.findByEmail(email);
+        String dbPassword=user.getPassword();
+        if (passwordEncoder.matches(oldPassword,dbPassword)) {
+            String hashedPassword = passwordEncoder.encode(newPassword);
+            System.out.println(hashedPassword);
+            user.setPassword(hashedPassword);
+            userRepository.save(user);
+            return ResponseEntity.ok("Password updated successfully.");
+        } else {
+            return ResponseEntity.badRequest().body("Bad Request.");
+        }
+    }
 }
 
 

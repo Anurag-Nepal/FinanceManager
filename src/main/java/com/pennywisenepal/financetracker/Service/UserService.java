@@ -64,9 +64,9 @@ public class UserService {
         String body = "Hey, Welcome to PennyWise.\n" +
                 "This mail has been sent to you for verification to register on our site. " +
                 "If you haven't registered, kindly ignore this mail.\n" +
-                "The OTP for your registration is " + otp + ".\n" +
-                "Team PennyWise Nepal" +
-                "Kindly Keep your Otp Safe and Dont Share With Anyone";
+                "The OTP for your registration is <b>"+ otp + ".\n" +
+                "Team PennyWise Nepal</b>" +
+                "Kindly Keep your Otp Safe and Don't Share With Anyone";
 
         String sub = "OTP Verification Mail";
         emailService.sendEmail(to, sub, body);

@@ -72,9 +72,12 @@ public class IncomeService {
         LocalDate startDate = LocalDate.now().minus(7, ChronoUnit.DAYS);
         LocalDate endDate = LocalDate.now().minus(1, ChronoUnit.DAYS);
         List<Income> incomes = incomeRepository.findByUserUsernameAndIdateBetweenOrderByIdateDesc(userService.getcurrentusername(),startDate, endDate);
-        return incomes;
 
+        return incomes;
     }
+
+
+
 
 
 
