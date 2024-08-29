@@ -62,7 +62,7 @@ public class ExpenseService {
     {
 
         LocalDate startDate = LocalDate.now().minus(30, ChronoUnit.DAYS);
-        LocalDate endDate = LocalDate.now().minus(1, ChronoUnit.DAYS);
+        LocalDate endDate = LocalDate.now();
         List<Expense> expenses = expenseRepository.findByUserUsernameAndEdateBetweenOrderByEdateDesc(userService.getcurrentusername(),startDate, endDate);
         return expenses;
 
@@ -72,7 +72,7 @@ public class ExpenseService {
     {
 
         LocalDate startDate = LocalDate.now().minus(7, ChronoUnit.DAYS);
-        LocalDate endDate = LocalDate.now().minus(1, ChronoUnit.DAYS);
+        LocalDate endDate = LocalDate.now();
         List<Expense> expenses = expenseRepository.findByUserUsernameAndEdateBetweenOrderByEdateDesc(userService.getcurrentusername(),startDate, endDate);
         return expenses;
 

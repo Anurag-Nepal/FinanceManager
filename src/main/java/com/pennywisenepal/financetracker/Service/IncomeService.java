@@ -60,7 +60,7 @@ public class IncomeService {
     public List<Income> getLastMonthList()
     {
         LocalDate startDate = LocalDate.now().minus(30, ChronoUnit.DAYS);
-        LocalDate endDate = LocalDate.now().minus(1, ChronoUnit.DAYS);
+        LocalDate endDate = LocalDate.now();
         List<Income> incomes = incomeRepository.findByUserUsernameAndIdateBetweenOrderByIdateDesc(userService.getcurrentusername(),startDate, endDate);
         return incomes;
 
@@ -70,7 +70,7 @@ public class IncomeService {
     {
 
         LocalDate startDate = LocalDate.now().minus(7, ChronoUnit.DAYS);
-        LocalDate endDate = LocalDate.now().minus(1, ChronoUnit.DAYS);
+        LocalDate endDate = LocalDate.now();
         List<Income> incomes = incomeRepository.findByUserUsernameAndIdateBetweenOrderByIdateDesc(userService.getcurrentusername(),startDate, endDate);
 
         return incomes;
