@@ -272,7 +272,7 @@ public class ExpenseService {
     public String deleteExpense(@PathVariable  int eid)
     {
 
-        expenseRepository.deleteByEidAndUserUsername(eid,userService.getcurrentusername());
+        expenseRepository.deleteById(eid);
         return "Entry Deleted Successfully";
     }
 
