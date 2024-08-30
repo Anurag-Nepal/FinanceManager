@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChangePassword {
-    private String oldPassword;
     private String newPassword;
     private String email;
+    private Integer otp;
 
 }

@@ -17,11 +17,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
+import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -136,26 +139,57 @@ public class HomepageListDisplayer {
         profile.setName(name);
         return profile;
     }
-
-
-
     @PostMapping("/forgot")
-    public ResponseEntity<String> forgotPassword(@RequestBody ChangePassword password) {
-        String email = password.getEmail();
-        String oldPassword = (password.getOldPassword());
-        String newPassword = password.getNewPassword();
-        User user = userRepository.findByEmail(email);
-        String dbPassword=user.getPassword();
-        if (passwordEncoder.matches(oldPassword,dbPassword)) {
-            String hashedPassword = passwordEncoder.encode(newPassword);
-            System.out.println(hashedPassword);
-            user.setPassword(hashedPassword);
-            userRepository.save(user);
-            return ResponseEntity.ok("Password updated successfully.");
-        } else {
-            return ResponseEntity.badRequest().body("Bad Request.");
+public String sendOtp(@RequestBody ChangePassword password) throws MessagingException {
+    User user = userRepository.findByEmail(password.getEmail());
+        if(!user.getIsVerified())
+        {
+            throw new MessagingException("User Associated With this email could not be found");
         }
+        String to = password.getEmail();
+        Integer otp = user.getOtp();
+    String sub = "Forgot Password Mail";
+    String body = "We received a request to reset your password. To proceed with the reset, please use the OTP code provided below:\n" +
+            "\n" +
+            "Your OTP Code: \n" + otp +
+            "\n" +
+            "This code is valid for the next 10 minutes. If you did not request a password reset, please disregard this email." +
+            " Your account is safe and secure.\n" +
+            "\n" +
+            "To reset your password, enter the OTP on the password reset page. If you encounter any issues or need further assistance," +
+            " please contact our support team at pennywisenepal@gmail.com." +
+            "Best Regards \n" +
+            "PennyWiseNepal";
+    emailService.sendEmail(to, sub, body);
+return "Otp Sent Successfully";
+
+}
+@PostMapping("/otp")
+    public String validateOtp(@RequestBody ChangePassword password) throws Exception {
+        User user = userRepository.findByEmail(password.getEmail());
+        if(password.getOtp().equals(user.getOtp()))
+        {
+            return "Otp Verified Successfully";
+        }
+        else
+            throw new Exception("Otp Was Incorrect");
+
     }
+
+
+
+@PostMapping("/changepass")
+    public String changePassword(@RequestBody ChangePassword password)
+{
+    User user =  userRepository.findByEmail(password.getEmail());
+    user.setPassword(passwordEncoder.encode(password.getNewPassword()));
+     userRepository.save(user);
+     return "The Password was Successfully Changed";
+
+}
+
+
+
 }
 
 
